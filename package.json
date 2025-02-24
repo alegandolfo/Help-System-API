@@ -1,0 +1,26 @@
+{
+  "name": "help-system",
+  "version": "0.0.1",
+  "description": "API for Help System application",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.ts",
+    "dev": "nodemon src/server.ts"
+  },
+  "author": "Alexandre Gandolfo",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "tsx": "^4.19.3"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.5",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mongoose": "^8.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
