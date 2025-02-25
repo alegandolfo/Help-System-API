@@ -1,19 +1,21 @@
 import express from "express"
 import { UserController } from '../controller/UserController'
+
 let userController = new UserController()
 
 const router = express.Router()
+router.use(express.json())
 
-router.post("/", async(req,res) =>{
+router.post("/", async(req, res) =>{
   try {
-    console.log("POST request received. Body is ", req.body)
+        console.log("POST request received. Body is ", req.body)
 
-      let user = await userController.createUser(req.body.email, req.body.name, req.body.password, req.body.sector)
-      res.send(user)
+        let user = await userController.createUser(req.body.email, req.body.name, req.body.password, req.body.sector)
+        res.send(user)
 
-      console.log("Succesfull creation. User is ", user)
+        console.log("Succesfull creation. User is ", user)
   } catch (error) {
-      res.send(error)
+        res.send(error)
   }
 })
 
