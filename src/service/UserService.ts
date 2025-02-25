@@ -1,12 +1,13 @@
-import { UserDeletionFailed, UserUpdateFailed, UserViewingFailed } from '../model/errors'
+import { UserCreationFailed, UserDeletionFailed, UserUpdateFailed, UserViewingFailed } from '../model/errors'
+import { SectorTypes } from '../model/SectorTypes'
 import { UserEntity } from '../model/UserEntity'
 import { UserRepository } from '../repository/UserRepository'
 import UserSchema from '../schema/UserSchema'
-import { IError } from '../utils/iError'
+import { ErrorObj } from '../utils/errorObj'
 
 export class UserService implements UserRepository {
 
-  async createUser (email: string, name: string, password: string, sector: string): Promise<UserEntity|IError> {
+  async createUser (email: string, name: string, password: string, sector: SectorTypes): Promise<UserEntity|ErrorObj> {
     let newUser = new UserSchema({
         email: email,
         name: name,
@@ -14,13 +15,14 @@ export class UserService implements UserRepository {
         sector: sector
     })
     await newUser.save()
-    const user = new UserEntity(newUser.email, newUser.name, newUser.password, newUser.sector)
 
-    console.log("Succesfull creation. User is ", user)
+    if (newUser == null) return UserCreationFailed
+
+    const user = new UserEntity(email, name, password, sector)
     return user
 }
 
-  async getUser (email: string): Promise<UserEntity|IError> {
+  async getUser (email: string): Promise<UserEntity|ErrorObj> {
      let userData = await UserSchema.findOne({email: email})
     
      if (userData == null) return UserViewingFailed
@@ -29,20 +31,20 @@ export class UserService implements UserRepository {
      return user
  }
 
- async updateUser (email: string, name?: string, password?: string, sector?: string): Promise<UserEntity|IError> {
-  let user = await UserSchema.findOne({email: email})
+ async updateUser (email: string, name?: string, password?: string, sector?: SectorTypes): Promise<UserEntity|ErrorObj> {
+    let user = await UserSchema.findOne({email: email})
 
-  if (user == null) return UserUpdateFailed
+    if (user == null) return UserUpdateFailed
 
-  if (name != null) user.name = name
-  if (password != null) user.password = password
-  if (sector != null) user.sector = sector
+    if (name != null) user.name = name
+    if (password != null) user.password = password
+    if (sector != null) user.sector = sector
 
-  await user.save()
-  return new UserEntity(user.name, user.email, user.password, user.sector)
+    await user.save()
+    return new UserEntity(user.name, user.email, user.password, user.sector)
 }
  
- async deleteUser (email: string): Promise<boolean|IError> {
+ async deleteUser (email: string): Promise<boolean|ErrorObj> {
     let user = await UserSchema.deleteOne({email: email})
 
     if (user == null) return UserDeletionFailed

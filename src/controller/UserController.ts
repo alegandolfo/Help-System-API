@@ -1,28 +1,65 @@
+import { validate } from 'class-validator';
+import { SectorTypes } from '../model/SectorTypes';
 import { UserEntity } from '../model/UserEntity';
 import { UserService } from "../service/UserService"
-import { IError } from '../utils/iError';
+import { ErrorObj } from '../utils/errorObj';
+import { inputCreateUser } from './inputs/users/inputCreateUser';
+import { inputGetUser } from './inputs/users/inputGetUser';
+import { inputDeleteUser } from './inputs/users/inputDeleteUser';
+import { inputUpdateUser } from './inputs/users/inputUpdateUser';
+import { InvalidUserData } from '../model/errors';
 
 let userService:UserService = new UserService()
 
 export class UserController {
-  async createUser(email: string, name: string, password: string, sector: string): Promise<UserEntity|IError>{
-    let user = await userService.createUser(email, name, password, sector)
+  async createUser(email: string, name: string, password: string, sector: SectorTypes): Promise<UserEntity|ErrorObj>{
 
-    console.log("Succesfull creation. User is ", user)
+    let validatedInput = await validate(new inputCreateUser(email, name, password, sector)).then(errors => {
+      if (errors.length > 0) return errors
+      else return null
+    })
+
+    if (validatedInput != null) return new ErrorObj(InvalidUserData.code, InvalidUserData.message, InvalidUserData.httpCode, validatedInput)
+
+    let user = await userService.createUser(email, name, password, sector)
     return user
   }
   
-  async getUser(email: string): Promise<UserEntity|IError>{
+  async getUser(email: string): Promise<UserEntity|ErrorObj>{
+
+    let validatedInput = await validate(new inputGetUser(email)).then(errors => {
+      if (errors.length > 0) return errors
+      else return null
+    })
+
+    if (validatedInput != null) return new ErrorObj(InvalidUserData.code, InvalidUserData.message, InvalidUserData.httpCode, validatedInput)
+
     let user = await userService.getUser(email)
     return user
   }
 
-  async updateUser(email: string, name: string, password: string, sector: string): Promise<UserEntity|IError>{
+  async updateUser(email: string, name: string, password: string, sector: SectorTypes): Promise<UserEntity|ErrorObj>{
+
+    let validatedInput = await validate(new inputUpdateUser(email, name, password, sector)).then(errors => {
+      if (errors.length > 0) return errors
+      else return null
+    })
+
+    if (validatedInput != null) return new ErrorObj(InvalidUserData.code, InvalidUserData.message, InvalidUserData.httpCode, validatedInput)
+
     let user = await userService.updateUser(email, name, password, sector)
     return user
   }
 
-  async deleteUser(email: string): Promise<boolean|IError>{
+  async deleteUser(email: string): Promise<boolean|ErrorObj>{
+
+    let validatedInput = await validate(new inputDeleteUser(email)).then(errors => {
+      if (errors.length > 0) return errors
+      else return null
+    })
+
+    if (validatedInput != null) return new ErrorObj(InvalidUserData.code, InvalidUserData.message, InvalidUserData.httpCode, validatedInput)
+
     let user = await userService.deleteUser(email)
     return user
   }

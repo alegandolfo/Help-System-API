@@ -1,10 +1,10 @@
 import { SectorTypes } from "../model/SectorTypes"
 import { UserEntity } from "../model/UserEntity"
-import { IError } from "../utils/iError"
+import { ErrorObj } from "../utils/ErrorObj"
 
 export interface UserRepository {
-    createUser(email: string, name: string, password: string, sector: SectorTypes): Promise<UserEntity|IError>
-    getUser(email: string): Promise<UserEntity|IError>
-    updateUser(email: string, name?: string, password?: string, sector?: SectorTypes): Promise<UserEntity|IError>
-    deleteUser(email: string): Promise<boolean|IError>
+    createUser(email: string, name: string, password: string, sector: SectorTypes): Promise<UserEntity|ErrorObj>
+    getUser(email: string): Promise<UserEntity|ErrorObj>
+    updateUser(email: string, name?: string, password?: string, sector?: SectorTypes): Promise<UserEntity|ErrorObj>
+    deleteUser(email: string): Promise<boolean|ErrorObj>
 }
