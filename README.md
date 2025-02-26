@@ -18,7 +18,7 @@ DB_USER=UsuárioDoBanco
 DB_PASSWORD=SenhaDoUsuário
 ```
 
-Se você possui todas as dependências instaladas e o arquivo .env preenchido, então use o comando `npx tsx src/server.js` para inicializar o projeto. Caso deseje, é possível mudar a porta padrão no arquivo `config.ts`.
+Se você possui todas as dependências instaladas e o arquivo .env preenchido, então use o comando `npx tsx src/server.ts` para inicializar o projeto. Caso deseje, é possível mudar a porta padrão no arquivo `config.ts`.
 
 
 ### Rotas do projeto.
