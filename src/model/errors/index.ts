@@ -13,3 +13,10 @@ export const PostUpdateFailed = new ErrorObj('PUF-103', 'Post update failed', 50
 export const PostDeletionFailed = new ErrorObj('PDF-104', 'Post deletion failed', 500)
 export const PostNotFound = new ErrorObj('PNF-105', 'Post not found', 404)
 export const InvalidPostData = new ErrorObj('IPD-106', 'Invalid post data', 400)
+
+export const ReplyCreationFailed = new ErrorObj('RCF-201', 'Reply creation failed', 500)
+export const ReplyViewingFailed = new ErrorObj('RVF-202', 'Reply viewing failed', 500)
+export const ReplyUpdateFailed = new ErrorObj('RUF-203', 'Reply update failed', 500)
+export const ReplyDeletionFailed = new ErrorObj('RDF-204', 'Reply deletion failed', 500)
+export const ReplyNotFound = new ErrorObj('RNF-205', 'Reply not found', 404)
+export const InvalidReplyData = new ErrorObj('IRD-206', 'Invalid reply data', 400)

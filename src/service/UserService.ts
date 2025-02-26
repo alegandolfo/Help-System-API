@@ -26,7 +26,7 @@ export class UserService implements UserRepository {
      let userData = await UserSchema.findOne({email: email})
      if (userData == null) return UserNotFound
 
-     const user = new UserEntity(userData.email, userData.name, userData.password, userData.sector)
+     const user = new UserEntity(userData.email, userData.name, userData.password, userData.sector as SectorTypes)
      return user
  }
 
@@ -39,7 +39,7 @@ export class UserService implements UserRepository {
     if (sector != null) user.sector = sector
 
     await user.save()
-    return new UserEntity(user.name, user.email, user.password, user.sector)
+    return new UserEntity(user.name, user.email, user.password, user.sector as SectorTypes)
 }
  
  async deleteUser (email: string): Promise<boolean|ErrorObj> {

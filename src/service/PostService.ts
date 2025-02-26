@@ -1,4 +1,4 @@
-import { PostCreationFailed, PostDeletionFailed, PostNotFound, PostUpdateFailed, PostViewingFailed } from '../model/errors'
+import { PostCreationFailed, PostNotFound } from '../model/errors'
 import { SectorTypes } from '../model/SectorTypes'
 import { PostEntity } from '../model/PostEntity'
 import { PostRepository } from '../repository/PostRepository'
@@ -19,13 +19,13 @@ export class PostService implements PostRepository {
 
     const post = new PostEntity(userEmail, content, sector)
     return post
-}
+  }
 
   async getPost (_id: string): Promise<PostEntity|ErrorObj> {
      let postData = await PostSchema.findOne({_id: _id})
      if (postData == null) return PostNotFound
 
-     const post = new PostEntity(postData.userEmail, postData.content, postData.sector, postData.createdAt, postData.updatedAt)
+     const post = new PostEntity(postData.userEmail, postData.content, postData.sector as SectorTypes, postData.createdAt, postData.updatedAt)
      return post
  }
 
@@ -37,7 +37,7 @@ export class PostService implements PostRepository {
     if (sector != null) post.sector = sector
 
     await post.save()
-    return new PostEntity(post.userEmail, post.content, post.sector, post.createdAt, post.updatedAt)
+    return new PostEntity(post.userEmail, post.content, post.sector as SectorTypes, post.createdAt, post.updatedAt)
 }
  
  async deletePost (_id: string): Promise<boolean|ErrorObj> {
@@ -46,5 +46,12 @@ export class PostService implements PostRepository {
 
     await PostSchema.deleteOne({_id: _id})
     return true
+ }
+
+ async validatePost(_id: string): Promise<boolean> {
+  const postExists = await PostSchema.findOne({_id: _id})
+
+  if (postExists == null) return false
+  return true
  }
 }

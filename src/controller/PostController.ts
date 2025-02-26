@@ -23,7 +23,6 @@ export class PostController {
 
     let userService:UserService = new UserService()
     let userExists = await userService.validateUser(userEmail)
-    console.log("User Exists? :: ", userExists)
     if (!userExists) return UserNotFound
 
     let post = await postService.createPost(userEmail, content, sector)
