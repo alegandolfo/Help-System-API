@@ -15,7 +15,7 @@ router.post("/", async(req, res) =>{
         if (user instanceof ErrorObj) res.status(user.httpCode).send(user)
         else res.status(200).send(user)
   } catch (error) {
-        res.status(UserCreationFailed.httpCode).send(UserCreationFailed)
+        res.status(500).send(UserCreationFailed)
         console.log("User creation error :: ", error)
   } 
 })
