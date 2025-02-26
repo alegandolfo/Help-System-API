@@ -1,6 +1,7 @@
 import express from "express"
 import { UserController } from '../controller/UserController'
 import { ErrorObj } from '../utils/errorObj'
+import { UserCreationFailed, UserDeletionFailed, UserUpdateFailed, UserViewingFailed } from "../model/errors"
 
 let userController = new UserController()
 
@@ -14,7 +15,8 @@ router.post("/", async(req, res) =>{
         if (user instanceof ErrorObj) res.status(user.httpCode).send(user)
         else res.status(200).send(user)
   } catch (error) {
-        res.send(error)
+        res.status(UserCreationFailed.httpCode).send(UserCreationFailed)
+        console.log("User creation error :: ", error)
   } 
 })
 
@@ -25,7 +27,8 @@ router.get("/:email", async(req, res) =>{
         if (user instanceof ErrorObj) res.status(user.httpCode).send(user)
         else res.status(200).send(user)
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send(UserViewingFailed)
+        console.log("User viewing error :: ", error)
     }
 })
 
@@ -36,7 +39,8 @@ router.put("/", async (req, res) => {
         if (user instanceof ErrorObj) res.status(user.httpCode).send(user)
         else res.status(200).send(user)
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send(UserUpdateFailed)
+        console.log("User update error :: ", error)
     }
 })
 
@@ -47,7 +51,8 @@ router.delete("/:email", async(req, res) => {
         if (user instanceof ErrorObj) res.status(user.httpCode).send(user)
         else res.status(200).send('User deleted')
     } catch (error) {
-        res.status(500).send("Error deleting user")
+        res.status(500).send(UserDeletionFailed)
+        console.log("User deletion error :: ", error)
     }
 })
 

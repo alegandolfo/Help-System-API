@@ -1,4 +1,4 @@
-import { UserCreationFailed, UserDeletionFailed, UserUpdateFailed, UserViewingFailed } from '../model/errors'
+import { UserCreationFailed, UserDeletionFailed, UserNotFound, UserUpdateFailed, UserViewingFailed } from '../model/errors'
 import { SectorTypes } from '../model/SectorTypes'
 import { UserEntity } from '../model/UserEntity'
 import { UserRepository } from '../repository/UserRepository'
@@ -24,8 +24,7 @@ export class UserService implements UserRepository {
 
   async getUser (email: string): Promise<UserEntity|ErrorObj> {
      let userData = await UserSchema.findOne({email: email})
-    
-     if (userData == null) return UserViewingFailed
+     if (userData == null) return UserNotFound
 
      const user = new UserEntity(userData.email, userData.name, userData.password, userData.sector)
      return user
@@ -33,8 +32,7 @@ export class UserService implements UserRepository {
 
  async updateUser (email: string, name?: string, password?: string, sector?: SectorTypes): Promise<UserEntity|ErrorObj> {
     let user = await UserSchema.findOne({email: email})
-
-    if (user == null) return UserUpdateFailed
+    if (user == null) return UserNotFound
 
     if (name != null) user.name = name
     if (password != null) user.password = password
@@ -45,10 +43,10 @@ export class UserService implements UserRepository {
 }
  
  async deleteUser (email: string): Promise<boolean|ErrorObj> {
-    let user = await UserSchema.deleteOne({email: email})
+    let user = await UserSchema.findOne({email: email})
+    if (user == null) return UserNotFound
 
-    if (user == null) return UserDeletionFailed
-
+    await UserSchema.deleteOne({email: email})
     return true
  }
 }
