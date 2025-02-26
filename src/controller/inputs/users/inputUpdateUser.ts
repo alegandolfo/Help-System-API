@@ -1,4 +1,4 @@
-import { IsEmail, IsIn, IsNotEmpty, IsString } from "class-validator"
+import { IsEmail, IsIn, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { SectorTypes } from "../../../model/SectorTypes"
 
 export class inputUpdateUser {
@@ -6,12 +6,15 @@ export class inputUpdateUser {
   @IsEmail()
   email!: string
 
+  @IsOptional()
   @IsString()
   name?: string
 
+  @IsOptional()
   @IsString()
   password?: string
 
+  @IsOptional()
   @IsIn(Object.values(SectorTypes))
   sector?: SectorTypes
 

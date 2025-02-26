@@ -1,4 +1,4 @@
-import { IsIn, IsMongoId, IsNotEmpty, IsString } from "class-validator"
+import { IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { SectorTypes } from "../../../model/SectorTypes"
 
 export class inputUpdatePost {
@@ -6,9 +6,11 @@ export class inputUpdatePost {
   @IsMongoId()
   _id!: string
 
+  @IsOptional()
   @IsString()
   content?: string
 
+  @IsOptional()
   @IsIn(Object.values(SectorTypes))
   sector?: SectorTypes
 
