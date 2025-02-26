@@ -49,4 +49,13 @@ export class UserService implements UserRepository {
     await UserSchema.deleteOne({email: email})
     return true
  }
+
+ async validateUser(email: string): Promise<boolean> {
+  const userExists = await UserSchema.findOne({email: email})
+
+  console.log("User Return :: ", userExists)
+
+  if (userExists == null) return false
+  return true
+ }
 }

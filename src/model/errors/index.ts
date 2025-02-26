@@ -6,3 +6,10 @@ export const UserUpdateFailed = new ErrorObj('UUF-003', 'User update failed', 50
 export const UserDeletionFailed = new ErrorObj('UDF-004', 'User deletion failed', 500)
 export const UserNotFound = new ErrorObj('UNF-005', 'User not found', 404)
 export const InvalidUserData = new ErrorObj('IUD-006', 'Invalid user data', 400)
+
+export const PostCreationFailed = new ErrorObj('PCF-101', 'Post creation failed', 500)
+export const PostViewingFailed = new ErrorObj('PVF-102', 'Post viewing failed', 500)
+export const PostUpdateFailed = new ErrorObj('PUF-103', 'Post update failed', 500)
+export const PostDeletionFailed = new ErrorObj('PDF-104', 'Post deletion failed', 500)
+export const PostNotFound = new ErrorObj('PNF-105', 'Post not found', 404)
+export const InvalidPostData = new ErrorObj('IPD-106', 'Invalid post data', 400)

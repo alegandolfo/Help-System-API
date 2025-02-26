@@ -7,4 +7,5 @@ export interface UserRepository {
     getUser(email: string): Promise<UserEntity|ErrorObj>
     updateUser(email: string, name?: string, password?: string, sector?: SectorTypes): Promise<UserEntity|ErrorObj>     // Change input to inputUpdateUser
     deleteUser(email: string): Promise<boolean|ErrorObj>
+    validateUser(email: string): Promise<boolean>
 }
