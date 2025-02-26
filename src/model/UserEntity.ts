@@ -1,10 +1,12 @@
+import { SectorTypes } from "./SectorTypes"
+
 export class UserEntity {
   email: string
   name: string
   password: string
-  sector: string
+  sector: SectorTypes
 
-  constructor (name: string, email: string, password: string, sector: string) {
+  constructor (email: string, name: string, password: string, sector: SectorTypes) {
     this.email = email
     this.name = name
     this.password = password
@@ -16,14 +18,14 @@ export class UserEntity {
   }
 
   getName(): string {
-    return this.email
+    return this.name
   }
 
   getPassword(): string {
-    return this.email
+    return this.password
   }
 
   getSector(): string {
-    return this.email
+    return this.sector
   }
 }
