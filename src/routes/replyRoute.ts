@@ -56,4 +56,16 @@ router.delete("/:_id", async(req, res) => {
     }
 })
 
+router.get("/:postId/list", async(req, res) => {
+    try {
+        let reply = await replyController.listReplies(req.params.postId)
+
+        if (reply instanceof ErrorObj) res.status(reply.httpCode).send(reply)
+        else res.status(200).send(reply)
+    } catch (error) {
+        res.status(500).send(ReplyViewingFailed)
+        console.log("Reply listing error :: ", error)
+    }
+})
+
 export default router

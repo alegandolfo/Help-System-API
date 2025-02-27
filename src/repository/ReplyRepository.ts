@@ -7,4 +7,5 @@ export interface ReplyRepository {
     updateReply(_id: string, content?: string): Promise<ReplyEntity|ErrorObj>                                   // Change input to inputUpdateReply
     deleteReply(_id: string): Promise<boolean|ErrorObj>
     validateReply(_id: string): Promise<boolean>
+    listReplies(postId: string): Promise<ReplyEntity[]|ErrorObj>
 }
