@@ -67,4 +67,9 @@ export class PostController {
     let post = await postService.deletePost(_id)
     return post
   }
+
+  async listPosts(): Promise<PostEntity[]|ErrorObj>{
+    let posts = await postService.listPosts()
+    return posts
+  }
 }

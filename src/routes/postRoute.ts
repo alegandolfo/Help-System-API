@@ -56,4 +56,16 @@ router.delete("/:_id", async(req, res) => {
     }
 })
 
+router.get("/", async(req, res) => {
+    try {
+        let post = await postController.listPosts()
+
+        if (post instanceof ErrorObj) res.status(post.httpCode).send(post)
+        else res.status(200).send(post)
+    } catch (error) {
+        res.status(500).send(PostViewingFailed)
+        console.log("Post listing error :: ", error)
+    }
+})
+
 export default router
