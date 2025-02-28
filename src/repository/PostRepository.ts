@@ -8,4 +8,5 @@ export interface PostRepository {
     updatePost(_id: string, content?: string, sector?: SectorTypes): Promise<PostEntity|ErrorObj>            // Change input to inputUpdatePost
     deletePost(_id: string): Promise<boolean|ErrorObj>
     validatePost(_id: string): Promise<boolean>
+    listPosts(): Promise<PostEntity[]|ErrorObj>
 }

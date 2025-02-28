@@ -1,15 +1,15 @@
 import { validate } from 'class-validator';
-import { SectorTypes } from '../model/SectorTypes';
 import { ReplyEntity } from '../model/ReplyEntity';
 import { ErrorObj } from '../utils/errorObj';
 import { inputCreateReply } from './inputs/replies/inputCreateReply';
 import { inputGetReply } from './inputs/replies/inputGetReply';
 import { inputDeleteReply } from './inputs/replies/inputDeleteReply';
 import { inputUpdateReply } from './inputs/replies/inputUpdateReply';
-import { InvalidReplyData, PostNotFound, ReplyNotFound, UserNotFound } from '../model/errors';
+import { InvalidPostData, InvalidReplyData, PostNotFound, ReplyNotFound, UserNotFound } from '../model/errors';
 import { UserService } from '../service/UserService';
 import { ReplyService } from '../service/ReplyService';
 import { PostService } from '../service/PostService';
+import { inputListReplies } from './inputs/replies/inputListReplies';
 
 let replyService:ReplyService = new ReplyService()
 
@@ -76,5 +76,17 @@ export class ReplyController {
 
     let reply = await replyService.deleteReply(_id)
     return reply
+  }
+
+  async listReplies(postId: string): Promise<ReplyEntity[]|ErrorObj>{
+    let validatedInput = await validate(new inputListReplies(postId)).then(errors => {
+      if (errors.length > 0) return errors
+      else return null
+    })
+
+    if (validatedInput != null) return new ErrorObj(InvalidPostData.code, InvalidPostData.message, InvalidPostData.httpCode, validatedInput)
+
+    let posts = await replyService.listReplies(postId)
+    return posts
   }
 }

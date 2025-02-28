@@ -1,4 +1,4 @@
-import { PostCreationFailed, PostNotFound } from '../model/errors'
+import { PostCreationFailed, PostNotFound, PostViewingFailed } from '../model/errors'
 import { SectorTypes } from '../model/SectorTypes'
 import { PostEntity } from '../model/PostEntity'
 import { PostRepository } from '../repository/PostRepository'
@@ -49,9 +49,22 @@ export class PostService implements PostRepository {
  }
 
  async validatePost(_id: string): Promise<boolean> {
-  const postExists = await PostSchema.findOne({_id: _id})
+    const postExists = await PostSchema.findOne({_id: _id})
 
-  if (postExists == null) return false
-  return true
+    if (postExists == null) return false
+    return true
+ }
+
+ async listPosts(): Promise<PostEntity[]|ErrorObj> {
+    const postList = await PostSchema.find()
+
+    if (postList == null) return PostViewingFailed
+
+    let posts: PostEntity[] = []
+    postList.forEach(element => {
+       posts.push(new PostEntity(element.userEmail, element.content, element.sector as SectorTypes))
+    })
+
+    return posts
  }
 }
