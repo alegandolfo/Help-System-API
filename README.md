@@ -28,3 +28,15 @@ Se você possui todas as dependências instaladas e o arquivo .env preenchido, e
 > [GET] http://localhost:3300/user/{userEmail} - Visualização de usuário.  
 > [PUT] http://localhost:3300/user - Atualização de usuário.  
 > [DELETE] http://localhost:3300/user/{userEmail} - Remoção de usuário.  
+
+> [POST] http://localhost:3300/post - Inserção de pergunta.  
+> [GET] http://localhost:3300/post/{postId} - Visualização de pergunta.  
+> [PUT] http://localhost:3300/post - Atualização de pergunta.  
+> [DELETE] http://localhost:3300/post/{postId} - Remoção de pergunta.  
+> [GET] http://localhost:3300/post - Listagem de perguntas.  
+
+> [POST] http://localhost:3300/reply - Inserção de resposta.  
+> [GET] http://localhost:3300/reply/{replyId} - Visualização de resposta.  
+> [PUT] http://localhost:3300/reply - Atualização de resposta.  
+> [DELETE] http://localhost:3300/reply/{replyId} - Remoção de resposta.  
+> [GET] http://localhost:3300/reply/{postId}/list - Listagem de respostas.  
