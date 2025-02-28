@@ -11,10 +11,10 @@ router.use(express.json())
 
 router.post("/", async(req, res) =>{
   try {
-        const handlePass = new passwordHandler()
-        const encryptedPassword = handlePass.hashPassword(req.body.password)
+        // const handlePass = new passwordHandler()
+        // const encryptedPassword = handlePass.hashPassword(req.body.password)
 
-        let user = await userController.createUser(req.body.email, req.body.name, encryptedPassword, req.body.sector)
+        let user = await userController.createUser(req.body.email, req.body.name, req.body.password, req.body.sector)
 
         if (user instanceof ErrorObj) res.status(user.httpCode).send(user)
         else res.status(200).send(user)
@@ -38,10 +38,10 @@ router.get("/:email", async(req, res) =>{
 
 router.put("/", async (req, res) => {
     try {
-        const handlePass = new passwordHandler()
-        const encryptedPassword = handlePass.hashPassword(req.body.password)
+        // const handlePass = new passwordHandler()
+        // const encryptedPassword = handlePass.hashPassword(req.body.password)
 
-        let user = await userController.updateUser(req.body.email, req.body.name, encryptedPassword, req.body.sector)
+        let user = await userController.updateUser(req.body.email, req.body.name, req.body.password, req.body.sector)
 
         if (user instanceof ErrorObj) res.status(user.httpCode).send(user)
         else res.status(200).send(user)
