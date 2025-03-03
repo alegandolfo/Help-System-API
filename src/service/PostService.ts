@@ -7,9 +7,10 @@ import { ErrorObj } from '../utils/errorObj'
 
 export class PostService implements PostRepository {
 
-  async createPost (userEmail: string, content: string, sector: SectorTypes): Promise<PostEntity|ErrorObj> {
+  async createPost (userEmail: string, title: string, content: string, sector: SectorTypes): Promise<PostEntity|ErrorObj> {
     let newPost = new PostSchema({
         userEmail: userEmail,
+        title: title,
         content: content,
         sector: sector
     })
@@ -17,7 +18,7 @@ export class PostService implements PostRepository {
 
     if (newPost == null) return PostCreationFailed
 
-    const post = new PostEntity(userEmail, content, sector)
+    const post = new PostEntity(userEmail, title, content, sector)
     return post
   }
 
@@ -29,15 +30,16 @@ export class PostService implements PostRepository {
      return post
  }
 
- async updatePost (_id: string, content?: string, sector?: SectorTypes): Promise<PostEntity|ErrorObj> {
+ async updatePost (_id: string, title?: string, content?: string, sector?: SectorTypes): Promise<PostEntity|ErrorObj> {
     let post = await PostSchema.findOne({_id: _id})
     if (post == null) return PostNotFound
 
     if (content != null) post.content = content
+    if (title != null) post.title = title
     if (sector != null) post.sector = sector
 
     await post.save()
-    return new PostEntity(post.userEmail, post.content, post.sector as SectorTypes, post.createdAt, post.updatedAt)
+    return new PostEntity(post.userEmail, post.title, post.content, post.sector as SectorTypes, post.createdAt, post.updatedAt)
 }
  
  async deletePost (_id: string): Promise<boolean|ErrorObj> {
@@ -62,7 +64,7 @@ export class PostService implements PostRepository {
 
     let posts: PostEntity[] = []
     postList.forEach(element => {
-       posts.push(new PostEntity(element.userEmail, element.content, element.sector as SectorTypes))
+       posts.push(new PostEntity(element.userEmail, element.title, element.content, element.sector as SectorTypes))
     })
 
     return posts

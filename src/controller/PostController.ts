@@ -13,9 +13,9 @@ import { UserService } from '../service/UserService';
 let postService:PostService = new PostService()
 
 export class PostController {
-  async createPost(userEmail: string, content: string, sector: SectorTypes): Promise<PostEntity|ErrorObj>{
+  async createPost(userEmail: string, title: string, content: string, sector: SectorTypes): Promise<PostEntity|ErrorObj>{
 
-    let validatedInput = await validate(new inputCreatePost(userEmail, content, sector)).then(errors => {
+    let validatedInput = await validate(new inputCreatePost(userEmail, title, content, sector)).then(errors => {
       if (errors.length > 0) return errors
       else return null
     })
@@ -25,7 +25,7 @@ export class PostController {
     let userExists = await userService.validateUser(userEmail)
     if (!userExists) return UserNotFound
 
-    let post = await postService.createPost(userEmail, content, sector)
+    let post = await postService.createPost(userEmail, title, content, sector)
     return post
   }
   
@@ -42,16 +42,16 @@ export class PostController {
     return post
   }
 
-  async updatePost(_id: string, content: string, sector: SectorTypes): Promise<PostEntity|ErrorObj>{
+  async updatePost(_id: string, title: string, content: string, sector: SectorTypes): Promise<PostEntity|ErrorObj>{
 
-    let validatedInput = await validate(new inputUpdatePost(_id, content, sector)).then(errors => {
+    let validatedInput = await validate(new inputUpdatePost(_id, title, content, sector)).then(errors => {
       if (errors.length > 0) return errors
       else return null
     })
 
     if (validatedInput != null) return new ErrorObj(InvalidPostData.code, InvalidPostData.message, InvalidPostData.httpCode, validatedInput)
 
-    let post = await postService.updatePost(_id, content, sector)
+    let post = await postService.updatePost(_id, title, content, sector)
     return post
   }
 

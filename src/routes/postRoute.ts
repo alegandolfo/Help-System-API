@@ -10,7 +10,7 @@ router.use(express.json())
 
 router.post("/", async(req, res) =>{
   try {
-        let post = await postController.createPost(req.body.userEmail, req.body.content, req.body.sector)
+        let post = await postController.createPost(req.body.userEmail, req.body.title, req.body.content, req.body.sector)
 
         if (post instanceof ErrorObj) res.status(post.httpCode).send(post)
         else res.status(200).send(post)
@@ -34,7 +34,7 @@ router.get("/:_id", async(req, res) =>{
 
 router.put("/", async (req, res) => {
     try {
-        let post = await postController.updatePost(req.body._id, req.body.content, req.body.sector)
+        let post = await postController.updatePost(req.body._id, req.body.title, req.body.content, req.body.sector)
 
         if (post instanceof ErrorObj) res.status(post.httpCode).send(post)
         else res.status(200).send(post)
