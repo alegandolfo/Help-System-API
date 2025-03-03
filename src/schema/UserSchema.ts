@@ -15,6 +15,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  salt: {
+    type: String,
+    required: true
+  },
   sector: {
     type: String,
     required: true
