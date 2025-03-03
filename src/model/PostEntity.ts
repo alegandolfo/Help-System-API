@@ -18,32 +18,4 @@ export class PostEntity {
     this.createdAt = createdAt
     this.updatedAt = updatedAt
   }
-
-  getId(): string|undefined {
-    return this._id
-  }
-
-  getUserEmail(): string {
-    return this.userEmail
-  }
-
-  getTitle(): string {
-    return this.title
-  }
-
-  getContent(): string {
-    return this.content
-  }
-
-  getSector(): string {
-    return this.sector
-  }
-
-  getCreatedAt(): Date|undefined {
-    return this.createdAt
-  }
-
-  getUpdatedAt(): Date|undefined {
-    return this.updatedAt
-  }
 }

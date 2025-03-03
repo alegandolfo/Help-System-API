@@ -18,32 +18,4 @@ export class ReplyEntity {
     this.createdAt = createdAt
     this.updatedAt = updatedAt
   }
-
-  getId(): string|undefined {
-    return this._id
-  }
-
-  getUserEmail(): string {
-    return this.userEmail
-  }
-
-  getPostId(): string {
-    return this.postId
-  }
-
-  getContent(): string {
-    return this.content
-  }
-
-  getReplyTo(): string|undefined {
-    return this.replyTo
-  }
-
-  getCreatedAt(): Date|undefined {
-    return this.createdAt
-  }
-
-  getUpdatedAt(): Date|undefined {
-    return this.updatedAt
-  }
 }
