@@ -69,4 +69,15 @@ export class UserService implements UserRepository {
   if (userExists == null) return false
   return true
  }
+
+ async login(email: string, password: string): Promise<boolean> {
+     let userData = await UserSchema.findOne({email: email})
+     if (userData == null) {
+       console.log(UserNotFound)
+       return false
+     }
+
+     const handlePass = new passwordHandler()
+     return handlePass.validatePassword(userData.password, userData.salt, password)
+ }
 }

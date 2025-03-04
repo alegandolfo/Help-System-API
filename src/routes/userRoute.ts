@@ -1,7 +1,7 @@
 import express from "express"
 import { UserController } from '../controller/UserController'
 import { ErrorObj } from '../utils/errorObj'
-import { UserCreationFailed, UserDeletionFailed, UserUpdateFailed, UserViewingFailed } from "../model/errors"
+import { IncorrectUserCredentials, UserCreationFailed, UserDeletionFailed, UserUpdateFailed, UserViewingFailed } from "../model/errors"
 
 let userController = new UserController()
 
@@ -50,6 +50,19 @@ router.delete("/:email", async(req, res) => {
 
         if (user instanceof ErrorObj) res.status(user.httpCode).send(user)
         else res.status(200).send('User deleted')
+    } catch (error) {
+        res.status(500).send(UserDeletionFailed)
+        console.log("User deletion error :: ", error)
+    }
+})
+
+router.post("/login", async(req, res) => {
+    try {
+        let loginResult = await userController.login(req.body.email, req.body.password)
+
+        if (loginResult instanceof ErrorObj) res.status(loginResult.httpCode).send(loginResult)
+        else if (loginResult) res.status(200).send('Successful login')
+        else res.status(401).send(IncorrectUserCredentials)
     } catch (error) {
         res.status(500).send(UserDeletionFailed)
         console.log("User deletion error :: ", error)
