@@ -1,24 +1,29 @@
-import { UserCreationFailed, UserDeletionFailed, UserNotFound, UserUpdateFailed, UserViewingFailed } from '../model/errors'
+import { IncorrectUserCredentials, UserCreationFailed, UserNotFound } from '../model/errors'
 import { SectorTypes } from '../model/SectorTypes'
 import { UserEntity } from '../model/UserEntity'
 import { UserRepository } from '../repository/UserRepository'
 import UserSchema from '../schema/UserSchema'
 import { ErrorObj } from '../utils/errorObj'
+import { passwordHandler } from '../utils/passwordHandler'
 
 export class UserService implements UserRepository {
 
   async createUser (email: string, name: string, password: string, sector: SectorTypes): Promise<UserEntity|ErrorObj> {
+    const handlePass = new passwordHandler()
+    const encryptedPassword = handlePass.hashPassword(password)
+
     let newUser = new UserSchema({
         email: email,
         name: name,
-        password: password,
+        password: encryptedPassword,
+        salt: handlePass.getSalt(),
         sector: sector
     })
     await newUser.save()
 
     if (newUser == null) return UserCreationFailed
 
-    const user = new UserEntity(email, name, password, sector)
+    const user = new UserEntity(email, name, encryptedPassword, sector)
     return user
 }
 
@@ -35,7 +40,13 @@ export class UserService implements UserRepository {
     if (user == null) return UserNotFound
 
     if (name != null) user.name = name
-    if (password != null) user.password = password
+    if (password != null) {
+      const handlePass = new passwordHandler()
+      const encryptedPassword = handlePass.hashPassword(password)
+
+      user.password = encryptedPassword
+      user.salt = handlePass.getSalt()
+    }
     if (sector != null) user.sector = sector
 
     await user.save()
@@ -57,5 +68,16 @@ export class UserService implements UserRepository {
 
   if (userExists == null) return false
   return true
+ }
+
+ async login(email: string, password: string): Promise<UserEntity|ErrorObj> {
+    let userData = await UserSchema.findOne({email: email})
+    if (userData == null) return UserNotFound
+
+    const handlePass = new passwordHandler()
+    if (!handlePass.validatePassword(userData.password, userData.salt, password)) return IncorrectUserCredentials
+
+    const user = new UserEntity(userData.email, userData.name, userData.password, userData.sector as SectorTypes)
+    return user
  }
 }

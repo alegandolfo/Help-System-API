@@ -12,20 +12,4 @@ export class UserEntity {
     this.password = password
     this.sector = sector
   }
-
-  getEmail(): string {
-    return this.email
-  }
-
-  getName(): string {
-    return this.name
-  }
-
-  getPassword(): string {
-    return this.password
-  }
-
-  getSector(): string {
-    return this.sector
-  }
 }

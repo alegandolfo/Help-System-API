@@ -6,6 +6,8 @@ export const UserUpdateFailed = new ErrorObj('UUF-003', 'User update failed', 50
 export const UserDeletionFailed = new ErrorObj('UDF-004', 'User deletion failed', 500)
 export const UserNotFound = new ErrorObj('UNF-005', 'User not found', 404)
 export const InvalidUserData = new ErrorObj('IUD-006', 'Invalid user data', 400)
+export const IncorrectUserCredentials = new ErrorObj('IUC-007', 'Incorrect user credentials', 401)
+export const UserLoginFailed = new ErrorObj('ULF-008', 'User login failed', 500)
 
 export const PostCreationFailed = new ErrorObj('PCF-101', 'Post creation failed', 500)
 export const PostViewingFailed = new ErrorObj('PVF-102', 'Post viewing failed', 500)

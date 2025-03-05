@@ -8,14 +8,19 @@ export class inputCreatePost {
 
   @IsNotEmpty()
   @IsString()
+  title!: string
+
+  @IsNotEmpty()
+  @IsString()
   content!: string
 
   @IsNotEmpty()
   @IsIn(Object.values(SectorTypes))
   sector!: SectorTypes
 
-  constructor (userEmail: string, content: string, sector: SectorTypes) {
+  constructor (userEmail: string, title: string, content: string, sector: SectorTypes) {
     this.userEmail = userEmail
+    this.title = title
     this.content = content
     this.sector = sector
   }

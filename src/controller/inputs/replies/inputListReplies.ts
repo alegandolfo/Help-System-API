@@ -1,4 +1,4 @@
-import { IsEmail, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { IsMongoId, IsNotEmpty } from "class-validator"
 
 export class inputListReplies {
   @IsNotEmpty()

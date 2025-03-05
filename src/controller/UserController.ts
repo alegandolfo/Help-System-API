@@ -8,6 +8,7 @@ import { inputGetUser } from './inputs/users/inputGetUser';
 import { inputDeleteUser } from './inputs/users/inputDeleteUser';
 import { inputUpdateUser } from './inputs/users/inputUpdateUser';
 import { InvalidUserData } from '../model/errors';
+import { inputLogin } from './inputs/users/inputLogin';
 
 let userService:UserService = new UserService()
 
@@ -52,7 +53,6 @@ export class UserController {
   }
 
   async deleteUser(email: string): Promise<boolean|ErrorObj>{
-
     let validatedInput = await validate(new inputDeleteUser(email)).then(errors => {
       if (errors.length > 0) return errors
       else return null
@@ -62,5 +62,17 @@ export class UserController {
 
     let user = await userService.deleteUser(email)
     return user
+  }
+
+  async login(email: string, password: string): Promise<UserEntity|ErrorObj>{
+    let validatedInput = await validate(new inputLogin(email, password)).then(errors => {
+      if (errors.length > 0) return errors
+      else return null
+    })
+
+    if (validatedInput != null) return new ErrorObj(InvalidUserData.code, InvalidUserData.message, InvalidUserData.httpCode, validatedInput)
+    
+    let authenticatedUser = await userService.login(email, password)
+    return authenticatedUser
   }
 }
