@@ -1,4 +1,4 @@
-import { UserCreationFailed, UserNotFound } from '../model/errors'
+import { IncorrectUserCredentials, UserCreationFailed, UserNotFound } from '../model/errors'
 import { SectorTypes } from '../model/SectorTypes'
 import { UserEntity } from '../model/UserEntity'
 import { UserRepository } from '../repository/UserRepository'
@@ -70,14 +70,14 @@ export class UserService implements UserRepository {
   return true
  }
 
- async login(email: string, password: string): Promise<boolean> {
-     let userData = await UserSchema.findOne({email: email})
-     if (userData == null) {
-       console.log(UserNotFound)
-       return false
-     }
+ async login(email: string, password: string): Promise<UserEntity|ErrorObj> {
+    let userData = await UserSchema.findOne({email: email})
+    if (userData == null) return UserNotFound
 
-     const handlePass = new passwordHandler()
-     return handlePass.validatePassword(userData.password, userData.salt, password)
+    const handlePass = new passwordHandler()
+    if (!handlePass.validatePassword(userData.password, userData.salt, password)) return IncorrectUserCredentials
+
+    const user = new UserEntity(userData.email, userData.name, userData.password, userData.sector as SectorTypes)
+    return user
  }
 }

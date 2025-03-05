@@ -64,7 +64,7 @@ export class UserController {
     return user
   }
 
-  async login(email: string, password: string): Promise<boolean|ErrorObj>{
+  async login(email: string, password: string): Promise<UserEntity|ErrorObj>{
     let validatedInput = await validate(new inputLogin(email, password)).then(errors => {
       if (errors.length > 0) return errors
       else return null
@@ -72,7 +72,7 @@ export class UserController {
 
     if (validatedInput != null) return new ErrorObj(InvalidUserData.code, InvalidUserData.message, InvalidUserData.httpCode, validatedInput)
     
-    let successfulLogin = await userService.login(email, password)
-    return successfulLogin
+    let authenticatedUser = await userService.login(email, password)
+    return authenticatedUser
   }
 }

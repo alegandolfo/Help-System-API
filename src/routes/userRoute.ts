@@ -1,7 +1,9 @@
 import express from "express"
+import jsonwebtoken from 'jsonwebtoken'
+import dotenv from 'dotenv'
 import { UserController } from '../controller/UserController'
 import { ErrorObj } from '../utils/errorObj'
-import { IncorrectUserCredentials, UserCreationFailed, UserDeletionFailed, UserUpdateFailed, UserViewingFailed } from "../model/errors"
+import { UserCreationFailed, UserDeletionFailed, UserLoginFailed, UserUpdateFailed, UserViewingFailed } from "../model/errors"
 
 let userController = new UserController()
 
@@ -61,11 +63,14 @@ router.post("/login", async(req, res) => {
         let loginResult = await userController.login(req.body.email, req.body.password)
 
         if (loginResult instanceof ErrorObj) res.status(loginResult.httpCode).send(loginResult)
-        else if (loginResult) res.status(200).send('Successful login')
-        else res.status(401).send(IncorrectUserCredentials)
+        else {
+            dotenv.config()
+            const token = jsonwebtoken.sign({email: loginResult.email, name: loginResult.name}, process.env.JWT_SECRET_KEY as string, {expiresIn: '2 days'})
+            res.status(200).send({user: {email: loginResult.email, name: loginResult.name}, token: token})
+        }
     } catch (error) {
-        res.status(500).send(UserDeletionFailed)
-        console.log("User deletion error :: ", error)
+        res.status(500).send(UserLoginFailed)
+        console.log("User login error :: ", error)
     }
 })
 

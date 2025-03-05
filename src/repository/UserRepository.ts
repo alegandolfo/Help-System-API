@@ -8,5 +8,5 @@ export interface UserRepository {
     updateUser(email: string, name?: string, password?: string, sector?: SectorTypes): Promise<UserEntity|ErrorObj>
     deleteUser(email: string): Promise<boolean|ErrorObj>
     validateUser(email: string): Promise<boolean>
-    login(email: string, password: string): Promise<boolean>
+    login(email: string, password: string): Promise<UserEntity|ErrorObj>
 }
